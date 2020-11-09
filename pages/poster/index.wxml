@@ -1,0 +1,59 @@
+<swiper
+ indicator-dots="{{true}}"
+ autoplay="{{true}}"
+ interval="{{5000}}"
+ duration="{{500}}"
+>
+	<block wx:for="{{ swiperURL }}">
+		<swiper-item>
+			<van-image
+			 src="{{item}}"
+			 height="300rpx"
+			 width="750rpx"
+			 fit="cover"
+			/>
+		</swiper-item>
+	</block>
+</swiper>
+
+<van-cell-group title="我的信息">
+	<van-field model:value="{{ name }}" placeholder="请输入您的称呼" />
+	<van-cell
+	 title="毕业年份"
+	 value="{{ grade }}"
+	 is-link
+	 arrow-direction="down"
+	 bind:click="toggleChangeGradeShow"
+	/>
+</van-cell-group>
+
+<view class="generateBtn">
+	<van-button
+	 round
+	 type="primary"
+	 block
+	 bind:click="generatePoster"
+	 color="#01a03a"
+	>生成我的证书
+	</van-button>
+</view>
+
+<van-popup
+ show="{{ changeGradeShow }}"
+ position="bottom"
+ bind:close="toggleChangeGradeShow"
+>
+	<van-picker
+	 columns="{{ grades }}"
+	 title="毕业年份🎓"
+	 bind:change="onGradeChange"
+	/>
+</van-popup>
+
+<poster
+ id="poster"
+ config="{{posterConfig}}"
+ bind:success="onPosterSuccess"
+ bind:fail="onPosterFail"
+/>
+

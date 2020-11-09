@@ -1,0 +1,12 @@
+.prevImg {
+    margin-left: 15rpx;
+}
+
+.generateBtn {
+    margin: 20rpx;
+    margin-top: 40rpx;
+}
+
+page {
+    background-color: #f1f3f6;
+}
