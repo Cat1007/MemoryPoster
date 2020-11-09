@@ -7,6 +7,21 @@
     margin-top: 40rpx;
 }
 
+.prevWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.posterWrapper {
+    width: 720rpx;
+    height: 495rpx;
+    border-radius: 10rpx;
+    overflow: hidden;
+}
+
 page {
     background-color: #f1f3f6;
 }

@@ -4,20 +4,35 @@
  interval="{{5000}}"
  duration="{{500}}"
 >
-	<block wx:for="{{ swiperURL }}">
+	<block wx:for="{{ swiperURL }}" wx:key="index">
 		<swiper-item>
 			<van-image
 			 src="{{item}}"
 			 height="300rpx"
 			 width="750rpx"
 			 fit="cover"
-			/>
+			 use-loading-slot
+			>
+				<van-loading
+				 slot="loading"
+				 type="spinner"
+				 size="20"
+				 vertical
+				/>
+			</van-image>
 		</swiper-item>
 	</block>
 </swiper>
 
 <van-cell-group title="我的信息">
-	<van-field model:value="{{ name }}" placeholder="请输入您的称呼" />
+	<van-field
+	 model:value="{{ name }}"
+	 label="称呼"
+	 placeholder="请输入您的称呼"
+	 error-message="{{ nameErrorMsg }}"
+	 bind:change="onNameChange"
+	 input-align="right"
+	/>
 	<van-cell
 	 title="毕业年份"
 	 value="{{ grade }}"
@@ -33,8 +48,9 @@
 	 type="primary"
 	 block
 	 bind:click="generatePoster"
-	 color="#01a03a"
-	>生成我的证书
+	 color="#7bd462"
+	 disabled="{{ !generateEnabled || saved }}"
+	>{{!saved?'生成我的证书':'已保存到相册，快去分享到朋友圈吧'}}
 	</van-button>
 </view>
 
@@ -43,11 +59,7 @@
  position="bottom"
  bind:close="toggleChangeGradeShow"
 >
-	<van-picker
-	 columns="{{ grades }}"
-	 title="毕业年份🎓"
-	 bind:change="onGradeChange"
-	/>
+	<van-picker columns="{{ grades }}" bind:change="onGradeChange" />
 </van-popup>
 
 <poster
@@ -56,4 +68,27 @@
  bind:success="onPosterSuccess"
  bind:fail="onPosterFail"
 />
+
+<van-overlay show="{{ posterShow }}">
+	<view class="prevWrapper">
+		<view class="posterWrapper">
+			<van-image
+			 src="{{ posterUrl }}"
+			 height="495rpx"
+			 width="720rpx"
+			/>
+		</view>
+		<van-button
+		 round
+		 type="primary"
+		 block
+		 bind:click="savePoster"
+		 color="#7bd462"
+		 icon="photo-o"
+		 loading="{{ savingLoading }}"
+		 disabled="{{ savingLoading }}"
+		>保存到相册
+		</van-button>
+	</view>
+</van-overlay>
 

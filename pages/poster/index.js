@@ -10,30 +10,141 @@ const pageOptions = {
     posterConfig: null,
     grades: [],
     changeGradeShow: false,
-    swiperURL: []
+    swiperURL: [],
+    photoAlbumAccess: false,
+    posterShow: false,
+    generateEnabled: true,
+    nameErrorMsg: '',
+    savingLoading: false,
+    saved: false
   },
 
-  generatePoster() {
-    PosterConfig.setInfo(this.data.name, this.data.grade)
-    let config = PosterConfig.getConfig()
-    console.log(config.texts)
-    this.setData({
-      posterConfig: config
-    }, () => {
-      Poster.create();
+  // 保存图片到相册
+  savePoster() {
+    var that = this
+
+    that.setData({
+      savingLoading:true
     })
+
+    // 拉取用户是否获取相册权限
+    wx.getSetting({
+      success(res) {
+        console.log(res.authSetting)
+        if (res.authSetting['scope.writePhotosAlbum']) {
+          // 保存操作
+          wx.saveImageToPhotosAlbum({
+            filePath: that.data.posterUrl,
+            success(res) {
+              that.setData({
+                posterShow: false,
+                savingLoading: false,
+                saved: true
+              })
+              wx.showToast({
+                title: '保存成功',
+                icon: 'success',
+                duration: 2000
+              })
+            }
+          })
+        } else {
+          wx.authorize({
+            scope: "scope.writePhotosAlbum",
+            success(res) {
+              // 保存操作
+              wx.saveImageToPhotosAlbum({
+                success(res) {
+                  that.setData({
+                    posterShow: false,
+                    savingLoading: false,
+                    saved: true
+                  })
+                  wx.showToast({
+                    title: '保存成功',
+                    icon: 'success',
+                    duration: 2000
+                  })
+                }
+              })
+            },
+            fail(res) {
+              // 提示打开权限
+              wx.showToast({
+                title: '保存失败,请点击右上角省略号打开相册权限',
+                icon: 'none',
+                duration: 2000
+              })
+              that.setData({
+                savingLoading: false
+              })
+            }
+          })
+        }
+      }
+    })
+
   },
 
+  // 根据配置生成海报
+  generatePoster() {
+    if (this.checkName()) {
+      this.setData({
+        generateEnabled: false
+      })
+      // 设置对应的名字和年级
+      PosterConfig.setInfo(this.data.name, this.data.grade)
+      let config = PosterConfig.getConfig()
+      console.log(config.texts)
+      this.setData({
+        posterConfig: config
+      }, () => {
+        Poster.create();
+      })
+    }
+  },
+
+  // 生成成功
   onPosterSuccess(e) {
+    var that = this
     const { detail } = e;
-    wx.previewImage({
-      current: detail,
-      urls: [detail]
+    // 显示预览界面
+    that.setData({
+      posterUrl: detail,
+      posterShow: true,
+      generateEnabled: true
     })
   },
 
   onPosterFail(e) {
     console.log(e.detail)
+    wx.showToast({
+      title: '生成失败，请重试',
+      icon: 'none',
+      duration: 2000
+    })
+    this.setData({
+      generateEnabled: true
+    })
+  },
+
+  // 检查称呼是否为空
+  checkName() {
+    if (this.data.name == '') {
+      this.setData({
+        nameErrorMsg: '昵称不能为空'
+      })
+      return false
+    } else {
+      this.setData({
+        nameErrorMsg: ''
+      })
+      return true
+    }
+  },
+
+  onNameChange() {
+    this.checkName()
   },
 
   toggleChangeGradeShow() {
@@ -54,7 +165,8 @@ const pageOptions = {
   },
   // 页面初始化
   init(e) {
-    // 拉取并配置二维码和
+    var that = this
+    // 拉取并配置海报二维码和背景的链接
     wx.cloud.getTempFileURL({
       fileList: [
         'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/cat.jpeg',
@@ -66,7 +178,7 @@ const pageOptions = {
       fail: console.error
     })
 
-    // 拉去轮播图背景链接
+    // 拉取轮播图背景链接
     wx.cloud.getTempFileURL({
       fileList: [
         'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Carousel/图艺楼.jpg',
