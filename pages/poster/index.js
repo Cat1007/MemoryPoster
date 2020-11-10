@@ -24,7 +24,7 @@ const pageOptions = {
     var that = this
 
     that.setData({
-      savingLoading:true
+      savingLoading: true
     })
 
     // 拉取用户是否获取相册权限
@@ -41,11 +41,6 @@ const pageOptions = {
                 savingLoading: false,
                 saved: true
               })
-              wx.showToast({
-                title: '保存成功',
-                icon: 'success',
-                duration: 2000
-              })
             }
           })
         } else {
@@ -54,16 +49,12 @@ const pageOptions = {
             success(res) {
               // 保存操作
               wx.saveImageToPhotosAlbum({
+                filePath: that.data.posterUrl,
                 success(res) {
                   that.setData({
                     posterShow: false,
                     savingLoading: false,
                     saved: true
-                  })
-                  wx.showToast({
-                    title: '保存成功',
-                    icon: 'success',
-                    duration: 2000
                   })
                 }
               })
@@ -135,7 +126,13 @@ const pageOptions = {
         nameErrorMsg: '昵称不能为空'
       })
       return false
-    } else {
+    } else if (this.data.name.length >= 5) {
+      this.setData({
+        nameErrorMsg: '昵称不能超过4个字符'
+      })
+      return false
+    }
+    else {
       this.setData({
         nameErrorMsg: ''
       })
@@ -169,10 +166,15 @@ const pageOptions = {
     // 拉取并配置海报二维码和背景的链接
     wx.cloud.getTempFileURL({
       fileList: [
-        'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/cat.jpeg',
-        'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/qrCode.jpeg'],
+        'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/证书背景1.jpg',
+        'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/证书背景2.jpg',
+        'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/证书背景3.jpg',
+        'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/证书背景4.jpg',
+        'cloud://memory-poster-env.6d65-memory-poster-env-1304168193/Poster/qrCode.jpeg',
+      ],
       success: res => {
-        PosterConfig.setImg(res.fileList[0].tempFileURL, res.fileList[1].tempFileURL)
+        let index = Math.floor(Math.random() * 4)
+        PosterConfig.setImg(res.fileList[index].tempFileURL, res.fileList[4].tempFileURL)
         console.log(res.fileList)
       },
       fail: console.error

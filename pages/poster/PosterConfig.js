@@ -1,60 +1,106 @@
-const NAME = 0
-const GRADE = 1
-const TITLW = 2
+const GRADE = 0
+const NAME = 1
+const TITLE = 2
 
 const BACKGROUND = 0
 const QRCODE = 1
 
+const TITLELIST = [
+    "肇中权威级考古学家",
+    "肇中行走小百科",
+    "肇中忠实铁粉",
+    "肇中冷知识文化推广大使",
+    "肇中热知识产权持有者",
+    "肇中全球粉丝后援会会员",
+]
+
 var PosterConfig = {
     posterConfig: {
-        width: 800,
-        height: 550,
+        width: 2100,
+        height: 3000,
         debug: false,
-        texts: [
+        preload: true,
+        blocks: [
             {
-                x: 100,
-                y: 100,
-                text: '校友名字占位符',
-                fontSize: 40,
-                color: '#ffffff'
+                x: 170,
+                y: 490,
+                height: 120,
+                width: 350,
+                zIndex: 10,
+                text: {
+                    x: 0,
+                    y: 0,
+                    text: '',
+                    fontSize: 100,
+                    color: '#000000',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    baseLine: 'middle'
+                }
             },
             {
-                x: 100,
-                y: 180,
-                text: '校友毕业年份占位符',
-                fontSize: 40,
-                color: '#ffffff'
+                x: 630,
+                y: 490,
+                height: 120,
+                width: 450,
+                zIndex: 10,
+                text: {
+                    x: 0,
+                    y: 0,
+                    text: '',
+                    fontSize: 100,
+                    color: '#000000',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    baseLine: 'middle'
+                }
             },
             {
-                x: 100,
-                y: 220,
-                text: '证书标题',
-                fontSize: 40,
-                color: '#ffffff'
+                x: 780,
+                y: 875,
+                height: 115,
+                width: 940,
+                zIndex: 10,
+                text: {
+                    x: 0,
+                    y: 0,
+                    text: '',
+                    fontSize: 83,
+                    color: '#000000',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    baseLine: 'middle',
+                    fontFamily: 'FZZhongDengXian-Z07S'
+                }
             }
+
         ],
         images: [
             {
                 x: 0,
                 y: 0,
                 url: '',
-                width: 800,
-                height: 550
+                width: 2100,
+                height: 3000,
+                zIndex: 1
             },
             {
-                x: 700,
-                y: 400,
+                x: 288,
+                y: 2460,
                 url: '',
-                width: 80,
-                height: 80
+                width: 380,
+                height: 380,
+                zIndex: 5
             }
         ]
     },
-    setInfo(name,grade) {
-        this.posterConfig.texts[NAME].text = name
-        this.posterConfig.texts[GRADE].text = grade
+    setInfo(name, grade) {
+        this.posterConfig.blocks[NAME].text.text = name
+        this.posterConfig.blocks[GRADE].text.text = grade
+        let index = Math.floor(Math.random() * TITLELIST.length)
+        this.posterConfig.blocks[TITLE].text.text = TITLELIST[index]
     },
-    setImg(background,qrcode) {
+    setImg(background, qrcode) {
         this.posterConfig.images[BACKGROUND].url = background
         this.posterConfig.images[QRCODE].url = qrcode
     },

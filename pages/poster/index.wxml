@@ -50,8 +50,12 @@
 	 bind:click="generatePoster"
 	 color="#7bd462"
 	 disabled="{{ !generateEnabled || saved }}"
-	>{{!saved?'生成我的证书':'已保存到相册，快去分享到朋友圈吧'}}
+	>{{!saved?'生成我的证书':'已保存到相册啦，快去查看吧'}}
 	</van-button>
+</view>
+
+<view class="footer">
+	By Cat1007
 </view>
 
 <van-popup
@@ -74,8 +78,8 @@
 		<view class="posterWrapper">
 			<van-image
 			 src="{{ posterUrl }}"
-			 height="495rpx"
-			 width="720rpx"
+			 height="1000rpx"
+			 width="700rpx"
 			/>
 		</view>
 		<van-button

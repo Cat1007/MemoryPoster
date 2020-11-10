@@ -16,10 +16,17 @@
 }
 
 .posterWrapper {
-    width: 720rpx;
-    height: 495rpx;
+    width: 700rpx;
+    height: 1000rpx;
     border-radius: 10rpx;
     overflow: hidden;
+}
+
+.footer {
+    margin-top: 40px;
+    font-size: 12px;
+    text-align: center;
+    color: #969799;
 }
 
 page {
