@@ -6,9 +6,9 @@
 
 ##### 实现效果
 
-<img src="./screenshot/首页.png" style="zoom: 33%;" />
+<img src="https://github.com/Cat1007/MemoryPoster/blob/master/screenshot/首页.png?raw=true" style="zoom: 33%;" />
 
-<img src="./screenshot/生成页.png" style="zoom: 33%;" />
+<img src="https://github.com/Cat1007/MemoryPoster/blob/master/screenshot/生成页.png?raw=true" style="zoom: 33%;" />
 
 
 
